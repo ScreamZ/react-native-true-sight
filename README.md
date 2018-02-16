@@ -25,9 +25,22 @@ By default there are two commands bar that are displayed respectively on differe
 - [Render a FullScreen Video player](./doc/full-screen-player.md)
 - [Implement your own controls bar](./doc/custom-controls-bar.md)
 
-# Quick example
+# Quick documentation
 
-This is simple as that. For advanced configuration, check the documentation.
+This is simple as that. 
+
+VideoPlayer accept the following props.
+
+- **source** - An url that target the MP4 file.
+- **autoStart** - Whether or not the video should start when rendered (Default to true).
+- **onError** - A callback that will be called when an error occured, if the resource is not reachable for example.
+- **onProgress** - A callback called each time the cursor advance in the video, receiving an object as following:
+  - currentTime - The current time in seconds.
+  - playableDuration - The playable duration in seconds, dependings on the buffer load.
+  - maximumDuration - The maximum duration of the video in seconds.
+- **onEnd** - A callback that will be called when the video reach the end.
+
+For advanced configuration, such as infinite loop, check the rest of the documentation and custom controls bar.
 
 ```jsx
 import PropTypes from 'prop-types'

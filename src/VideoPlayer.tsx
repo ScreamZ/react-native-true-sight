@@ -25,7 +25,7 @@ interface Props {
   bottomControlsBarProps: any;
 
   onError(err: any): void
-  onProgress(meta: ProgressStatus): void
+  onProgress(meta: ProgressStatus): { currentTime: number, playableDuration: number, totalDuration: number }
   onEnd(): void
 }
 
@@ -175,7 +175,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       })
     }
 
-    this.props.onProgress(meta)
+    this.props.onProgress(Object.assign(meta, { maximumDuration: this.state.totalTime }))
   }
 
   onEnd() {
