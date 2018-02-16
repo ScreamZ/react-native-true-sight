@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "jsx": "react-native",
+    "module": "es6",
+    "sourceMap": false,
+    "declaration": false,
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "noImplicitAny": false,
+    "noUnusedLocals": true,
+    "preserveConstEnums": true,
+    "outDir": "./build"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "build/**/*",
+    "node_modules/**/*",
+  ]
+}
