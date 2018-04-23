@@ -1,18 +1,18 @@
-import * as React from 'react'
+import * as React from "react";
 import {
   Animated,
   StyleSheet,
   View,
   TouchableWithoutFeedback
-} from 'react-native'
-import Video from 'react-native-video'
-import * as PropTypes from 'prop-types'
+} from "react-native";
+import Video from "react-native-video";
+import * as PropTypes from "prop-types";
 
-import DefaultLoader from './Loader'
-import DefaultMiddleControlsBar from './MiddleControlsBar'
-import DefaultBottomControlsBar from './BottomControlsBar'
+import DefaultLoader from "./Loader";
+import DefaultMiddleControlsBar from "./MiddleControlsBar";
+import DefaultBottomControlsBar from "./BottomControlsBar";
 
-const noop: () => void = () => { }
+const noop: () => void = () => {};
 
 interface Props {
   source: string;
@@ -24,14 +24,16 @@ interface Props {
   bottomControlsBar: React.ReactNode;
   bottomControlsBarProps: any;
 
-  onError(err: any): void
-  onProgress(meta: ProgressStatus): { currentTime: number, playableDuration: number, totalDuration: number }
-  onEnd(): void
+  onError(err: any): void;
+  onProgress(
+    meta: ProgressStatus
+  ): { currentTime: number; playableDuration: number; totalDuration: number };
+  onEnd(): void;
 }
 
 interface ProgressStatus {
   currentTime: number;
-  playableDuration: number
+  playableDuration: number;
 }
 
 interface State {
@@ -50,35 +52,37 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
 
     // Customisable components
     loader: PropTypes.node, // Loader component
-    middleControlsBar: PropTypes.node, // Bar displayed on the middle of the screen.
+    // Bar displayed on the middle of the screen.
+    middleControlsBar: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     middleControlsBarProps: PropTypes.object, // Used to override default component props.
-    bottomControlsBar: PropTypes.node, // Bar displayed on the bottom of the screen.
+    // Bar displayed on the bottom of the screen.
+    bottomControlsBar: PropTypes.oneOfType([PropTypes.element, PropTypes.func]),
     bottomControlsBarProps: PropTypes.object, // Used to override default component props.
 
     // Hooks
     onError: PropTypes.func,
     onProgress: PropTypes.func,
     onEnd: PropTypes.func
-  }
+  };
 
   static defaultProps = {
     autoStart: true,
     onError: noop,
     onProgress: noop,
     onEnd: noop
-  }
+  };
 
-  public controlsFadeValue: Animated.Value
-  public player: { seek: (position: number) => void }
-  public controlsHider: number
-  public toggleControls: () => void
-  public setPosition: (position: number) => void
-  public setNotLoading: () => void
-  public setPlaying: () => void
-  public setPaused: () => void
+  public controlsFadeValue: Animated.Value;
+  public player: { seek: (position: number) => void };
+  public controlsHider: number;
+  public toggleControls: () => void;
+  public setPosition: (position: number) => void;
+  public setNotLoading: () => void;
+  public setPlaying: () => void;
+  public setPaused: () => void;
 
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       isLoading: true, // Until buffer loaded.
@@ -86,34 +90,34 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       isPaused: !props.autoStart,
       currentTime: 0, // In seconds.
       totalTime: 0 // In seconds.
-    }
+    };
 
-    this.controlsFadeValue = new Animated.Value(1)
+    this.controlsFadeValue = new Animated.Value(1);
 
-    this.onLoad = this.onLoad.bind(this)
-    this.onProgress = this.onProgress.bind(this)
-    this.onEnd = this.onEnd.bind(this)
+    this.onLoad = this.onLoad.bind(this);
+    this.onProgress = this.onProgress.bind(this);
+    this.onEnd = this.onEnd.bind(this);
 
     this.toggleControls = () => {
       this.setState(({ showControls }) => ({
         showControls: !showControls
-      }))
-    }
+      }));
+    };
     this.setPosition = position => {
-      this.player.seek(position)
-      this.setState({ currentTime: position })
-    }
-    this.setNotLoading = () => this.setState({ isLoading: false })
-    this.setPlaying = () => this.setState({ isPaused: false })
-    this.setPaused = () => this.setState({ isPaused: true })
+      this.player.seek(position);
+      this.setState({ currentTime: position });
+    };
+    this.setNotLoading = () => this.setState({ isLoading: false });
+    this.setPlaying = () => this.setState({ isPaused: false });
+    this.setPaused = () => this.setState({ isPaused: true });
   }
 
   componentDidMount() {
-    this.toggleControls()
+    this.toggleControls();
   }
 
   componentWillUnmount() {
-    clearTimeout(this.controlsHider)
+    clearTimeout(this.controlsHider);
   }
 
   componentWillUpdate(nextProps: Props, nextState: State) {
@@ -123,23 +127,23 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
         toValue: nextState.showControls ? 1 : 0,
         duration: 250,
         useNativeDriver: true
-      }).start()
+      }).start();
     }
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
     const controlsDisplayed =
       prevState.showControls !== this.state.showControls &&
-      this.state.showControls === true
+      this.state.showControls === true;
 
     // Defined whether of not trigger controls auto-hide.
     switch (true) {
       case controlsDisplayed: // Control are displayed now
       case prevState.isPaused !== this.state.isPaused: // Player is not paused now
         // This reset dismiss on action.
-        clearTimeout(this.controlsHider)
-        this.controlsHider = this.createControlHider()
-        return
+        clearTimeout(this.controlsHider);
+        this.controlsHider = this.createControlHider();
+        return;
     }
   }
 
@@ -152,40 +156,42 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
    */
   createControlHider(delay = 3000): number {
     return setTimeout(() => {
-      if (!this.state.showControls) return
+      if (!this.state.showControls) return;
 
       this.setState({
         showControls: false
-      })
-    }, delay)
+      });
+    }, delay);
   }
 
   onLoad(meta: { duration: number }) {
-    this.setNotLoading()
-    this.setState({ totalTime: Math.floor(meta.duration) })
+    this.setNotLoading();
+    this.setState({ totalTime: Math.floor(meta.duration) });
   }
 
   onProgress(meta: ProgressStatus) {
-    const currentTime = Math.floor(meta.currentTime)
+    const currentTime = Math.floor(meta.currentTime);
 
     if (currentTime !== this.state.currentTime) {
       this.setState({
         currentTime,
         isLoading: currentTime >= meta.playableDuration
-      })
+      });
     }
 
-    this.props.onProgress(Object.assign(meta, { maximumDuration: this.state.totalTime }))
+    this.props.onProgress(
+      Object.assign(meta, { maximumDuration: this.state.totalTime })
+    );
   }
 
   onEnd() {
     // Pause video and reset
-    this.setPosition(0)
-    this.setNotLoading()
+    this.setPosition(0);
+    this.setNotLoading();
 
-    setTimeout(this.setPaused, 100) // Defer to counter a glitch on iOS where repeat = off isn't working.
+    setTimeout(this.setPaused, 100); // Defer to counter a glitch on iOS where repeat = off isn't working.
 
-    this.props.onEnd()
+    this.props.onEnd();
   }
 
   render() {
@@ -197,7 +203,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       bottomControlsBar,
       source,
       onError
-    } = this.props
+    } = this.props;
 
     const {
       currentTime,
@@ -205,11 +211,13 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       isLoading,
       showControls,
       isPaused
-    } = this.state
+    } = this.state;
 
-    const Loader: any | DefaultLoader = loader || DefaultLoader
-    const MiddleControlsBar: any | DefaultMiddleControlsBar = middleControlsBar || DefaultMiddleControlsBar
-    const BottomControlsBar: any | DefaultBottomControlsBar = bottomControlsBar || DefaultBottomControlsBar
+    const Loader: any | DefaultLoader = loader || DefaultLoader;
+    const MiddleControlsBar: any | DefaultMiddleControlsBar =
+      middleControlsBar || DefaultMiddleControlsBar;
+    const BottomControlsBar: any | DefaultBottomControlsBar =
+      bottomControlsBar || DefaultBottomControlsBar;
 
     // Those are the default passed.
     const baseControlsBarProps = {
@@ -219,7 +227,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       setPlaying: this.setPlaying,
       setPaused: this.setPaused,
       setPosition: this.setPosition
-    }
+    };
 
     return (
       <TouchableWithoutFeedback onPress={this.toggleControls}>
@@ -229,7 +237,8 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
           </View>
           <Animated.View
             style={[styles.controls, { opacity: this.controlsFadeValue }]}
-            pointerEvents={showControls ? undefined : 'none'}>
+            pointerEvents={showControls ? undefined : "none"}
+          >
             <View style={styles.middleControlsBar}>
               <MiddleControlsBar
                 {...middleControlsBarProps}
@@ -256,14 +265,14 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
           />
         </View>
       </TouchableWithoutFeedback>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center"
   },
   controls: {
     ...StyleSheet.absoluteFillObject,
@@ -272,24 +281,24 @@ const styles = StyleSheet.create({
   loaderWrapper: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 9,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   middleControlsBar: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center'
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center"
   },
   backgroundVideo: {
     flex: 1
   },
   bottomControlsBar: {
     zIndex: 10,
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0
   }
-})
+});
