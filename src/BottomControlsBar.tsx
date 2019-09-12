@@ -1,5 +1,7 @@
+// @ts-ignore peer deps
+import Slider from "@react-native-community/slider";
 import * as React from "react";
-import { View, Text, Slider, StyleSheet } from "react-native"
+import { View, Text, StyleSheet } from "react-native";
 import * as PropTypes from "prop-types";
 
 interface Props {
@@ -9,7 +11,7 @@ interface Props {
   navigationAllowed: boolean;
   setPlaying(): void;
   setPaused(): void;
-  setPosition(position: number): void
+  setPosition(position: number): void;
   barColor: string;
   joyStickColor: string;
 }
@@ -31,63 +33,61 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
     // Styles
     barColor: PropTypes.string, // Already completed bar color
     joyStickColor: PropTypes.string // Bar current position color
-  }
+  };
 
   static defaultProps = {
     navigationAllowed: true
-  }
+  };
 
-  public hasMovedSlider: boolean
-  public wasPausedBeforeSlide: boolean
+  public hasMovedSlider: boolean;
+  public wasPausedBeforeSlide: boolean;
 
   constructor(props) {
-    super(props)
+    super(props);
 
-    this.hasMovedSlider = false
-    this.wasPausedBeforeSlide = null
+    this.hasMovedSlider = false;
+    this.wasPausedBeforeSlide = null;
 
-    this.onSliderTouch = this.onSliderTouch.bind(this)
-    this.onSlidingComplete = this.onSlidingComplete.bind(this)
+    this.onSliderTouch = this.onSliderTouch.bind(this);
+    this.onSlidingComplete = this.onSlidingComplete.bind(this);
   }
 
   /**
    * Transform seconds to text giving 08:05 for the example.
-   * 
+   *
    * @param {number} seconds The number of seconds to transform.
-   * 
+   *
    * @returns {string}
    */
   secondsToMS(seconds: number): string {
-    const min = Math.floor(seconds / 60)
-    const sec = seconds % 60
-    return `${min < 10 ? '0' + min : min}:${sec < 10 ? '0' + sec : sec}`
+    const min = Math.floor(seconds / 60);
+    const sec = seconds % 60;
+    return `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
   }
 
   onSliderTouch(val) {
     if (!this.hasMovedSlider) {
-      this.hasMovedSlider = true
-      this.wasPausedBeforeSlide = this.props.isPaused // To know if we need to play after sliding.
-      this.props.setPaused()
+      this.hasMovedSlider = true;
+      this.wasPausedBeforeSlide = this.props.isPaused; // To know if we need to play after sliding.
+      this.props.setPaused();
     }
   }
 
   onSlidingComplete(val) {
-    this.hasMovedSlider = false
-    this.props.setPosition(Math.round(val))
+    this.hasMovedSlider = false;
+    this.props.setPosition(Math.round(val));
 
     if (!this.wasPausedBeforeSlide) {
-      this.props.setPlaying()
+      this.props.setPlaying();
     }
   }
 
   render() {
     return (
       <View style={styles.barWrapper}>
-        <Text style={styles.currentTime}>
-          {this.secondsToMS(this.props.currentTime)}
-        </Text>
+        <Text style={styles.currentTime}>{this.secondsToMS(this.props.currentTime)}</Text>
         <Slider
-          pointerEvents={this.props.navigationAllowed ? undefined : 'none'}
+          pointerEvents={this.props.navigationAllowed ? undefined : "none"}
           style={styles.loadingBar}
           maximumValue={this.props.totalTime}
           minimumTrackTintColor={this.props.barColor}
@@ -96,25 +96,23 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
           onValueChange={this.onSliderTouch}
           onSlidingComplete={this.onSlidingComplete}
         />
-        <Text style={styles.totalTime}>
-          {this.secondsToMS(this.props.totalTime)}
-        </Text>
+        <Text style={styles.totalTime}>{this.secondsToMS(this.props.totalTime)}</Text>
       </View>
-    )
+    );
   }
 }
 
 const styles = StyleSheet.create({
   barWrapper: {
-    flexDirection: 'row',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    flexDirection: "row",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
     height: 70,
     paddingHorizontal: 20,
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   currentTime: {
-    color: 'white',
+    color: "white",
     width: 40
   },
   loadingBar: {
@@ -122,7 +120,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   totalTime: {
-    color: 'white',
+    color: "white",
     width: 40
   }
-})
+});
