@@ -4,8 +4,8 @@ Run either `npm i react-native-true-sight --save` or `yarn add react-native-true
 
 # Step 2 - Install dependencies
 
-This library relies on [React Native Video](https://github.com/react-native-community/react-native-video),
+This library relies on [React Native Video](https://github.com/react-native-community/react-native-video) and [React Native Slider](https://github.com/react-native-community/react-native-slider),
 
-Please be sure to follow the doc in order to set-up that one correctly.
+Please be sure to follow the dosc in order to set-up those correctly.
 
 **Now you're ready to go!**

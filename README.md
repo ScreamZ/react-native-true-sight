@@ -13,8 +13,8 @@ This library provide a fully customisable video player that work both on Android
 By default there are two commands bar that are displayed respectively on different part of the parent container:
 
 - **Middle**. Contain by default a grid display two buttons:
-    - One with play / pause alternating.
-    - Another that will restart the video.
+  - One with play / pause alternating.
+  - Another that will restart the video.
 - **Bottom**. Contain the video current time, a progress bar and the total duration.
 - **Loader**. There is also a loader that will trigger while video is charging (network issues, bootstraping, ...).
 
@@ -27,11 +27,11 @@ By default there are two commands bar that are displayed respectively on differe
 
 # Quick documentation
 
-This is simple as that. 
+This is simple as that.
 
 VideoPlayer accept the following props.
 
-- **source** - An url that target the MP4 file.
+- **source** - An object with a key uri which is an url that target the MP4 file. Or directly a reference from a video on file system.
 - **autoStart** - Whether or not the video should start when rendered (Default to true).
 - **onError** - A callback that will be called when an error occured, if the resource is not reachable for example.
 - **onProgress** - A callback called each time the cursor advance in the video, receiving an object as following:
@@ -43,18 +43,18 @@ VideoPlayer accept the following props.
 For advanced configuration, such as infinite loop, check the rest of the documentation and custom controls bar.
 
 ```jsx
-import PropTypes from 'prop-types'
-import React, { Component } from 'react'
-import { View } from 'react-native'
-import VideoPlayer from 'react-native-true-sight'
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { View } from "react-native";
+import VideoPlayer from "react-native-true-sight";
 
 export default class HomeScreen extends Component {
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: 'black' }}>
-        <VideoPlayer source="https://somevideo.mp4" />
+      <View style={{ flex: 1, backgroundColor: "black" }}>
+        <VideoPlayer source={{ uri: "https://somevideo.mp4" }} />
       </View>
-    )
+    );
   }
 }
 ```

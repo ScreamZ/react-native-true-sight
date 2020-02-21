@@ -5,7 +5,7 @@ import {
   View,
   TouchableWithoutFeedback
 } from "react-native";
-import Video from "react-native-video";
+import Video, { VideoProperties } from "react-native-video";
 import * as PropTypes from "prop-types";
 
 import DefaultLoader from "./Loader";
@@ -15,7 +15,7 @@ import DefaultBottomControlsBar from "./BottomControlsBar";
 const noop: () => void = () => {};
 
 interface Props {
-  source: string;
+  source: VideoProperties["source"];
   autoStart: boolean;
 
   loader: React.ReactNode;
@@ -254,7 +254,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
           </Animated.View>
           <Video
             ref={player => (this.player = player)}
-            source={{ uri: source }}
+            source={source}
             style={styles.backgroundVideo}
             resizeMode="contain"
             paused={isPaused}
