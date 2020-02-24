@@ -47,7 +47,7 @@ interface State {
 export default class VideoPlayer extends React.PureComponent<Props, State> {
   static propTypes = {
     // Metadata
-    source: PropTypes.string.isRequired,
+    source: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     autoStart: PropTypes.bool,
 
     // Customisable components

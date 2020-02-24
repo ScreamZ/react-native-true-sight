@@ -5,20 +5,13 @@
     "module": "es6",
     "sourceMap": false,
     "declaration": false,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "noImplicitAny": false,
     "noUnusedLocals": true,
     "preserveConstEnums": true,
+    "skipLibCheck": true,
     "outDir": "./build"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "build/**/*",
-    "node_modules/**/*",
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["build/**/*", "node_modules/**/*"]
 }
