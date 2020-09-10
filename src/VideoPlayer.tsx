@@ -3,7 +3,7 @@ import {
   Animated,
   StyleSheet,
   View,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from "react-native";
 import Video, { VideoProperties } from "react-native-video";
 import * as PropTypes from "prop-types";
@@ -47,7 +47,8 @@ interface State {
 export default class VideoPlayer extends React.PureComponent<Props, State> {
   static propTypes = {
     // Metadata
-    source: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    source: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+      .isRequired,
     autoStart: PropTypes.bool,
 
     // Customisable components
@@ -62,14 +63,14 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
     // Hooks
     onError: PropTypes.func,
     onProgress: PropTypes.func,
-    onEnd: PropTypes.func
+    onEnd: PropTypes.func,
   };
 
   static defaultProps = {
     autoStart: true,
     onError: noop,
     onProgress: noop,
-    onEnd: noop
+    onEnd: noop,
   };
 
   public controlsFadeValue: Animated.Value;
@@ -89,7 +90,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       showControls: false, // Trigger on mount because we need auto-hide.
       isPaused: !props.autoStart,
       currentTime: 0, // In seconds.
-      totalTime: 0 // In seconds.
+      totalTime: 0, // In seconds.
     };
 
     this.controlsFadeValue = new Animated.Value(1);
@@ -100,10 +101,10 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
 
     this.toggleControls = () => {
       this.setState(({ showControls }) => ({
-        showControls: !showControls
+        showControls: !showControls,
       }));
     };
-    this.setPosition = position => {
+    this.setPosition = (position) => {
       this.player.seek(position);
       this.setState({ currentTime: position });
     };
@@ -126,7 +127,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       Animated.timing(this.controlsFadeValue, {
         toValue: nextState.showControls ? 1 : 0,
         duration: 250,
-        useNativeDriver: true
+        useNativeDriver: true,
       }).start();
     }
   }
@@ -159,7 +160,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       if (!this.state.showControls) return;
 
       this.setState({
-        showControls: false
+        showControls: false,
       });
     }, delay);
   }
@@ -175,7 +176,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
     if (currentTime !== this.state.currentTime) {
       this.setState({
         currentTime,
-        isLoading: currentTime >= meta.playableDuration
+        isLoading: currentTime >= meta.playableDuration,
       });
     }
 
@@ -202,7 +203,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       bottomControlsBarProps,
       bottomControlsBar,
       source,
-      onError
+      onError,
     } = this.props;
 
     const {
@@ -210,7 +211,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       totalTime,
       isLoading,
       showControls,
-      isPaused
+      isPaused,
     } = this.state;
 
     const Loader: any | DefaultLoader = loader || DefaultLoader;
@@ -226,7 +227,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
       isPaused,
       setPlaying: this.setPlaying,
       setPaused: this.setPaused,
-      setPosition: this.setPosition
+      setPosition: this.setPosition,
     };
 
     return (
@@ -253,7 +254,7 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
             </View>
           </Animated.View>
           <Video
-            ref={player => (this.player = player)}
+            ref={(player) => (this.player = player)}
             source={source}
             style={styles.backgroundVideo}
             resizeMode="contain"
@@ -272,33 +273,33 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   controls: {
     ...StyleSheet.absoluteFillObject,
-    zIndex: 5
+    zIndex: 5,
   },
   loaderWrapper: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 9,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   middleControlsBar: {
     ...StyleSheet.absoluteFillObject,
     zIndex: 10,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   backgroundVideo: {
-    flex: 1
+    flex: 1,
   },
   bottomControlsBar: {
     zIndex: 10,
     position: "absolute",
     bottom: 0,
     left: 0,
-    right: 0
-  }
+    right: 0,
+  },
 });
