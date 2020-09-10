@@ -16,7 +16,10 @@ interface Props {
   joyStickColor: string;
 }
 
-export default class BottomControlsBar extends React.PureComponent<Props, null> {
+export default class BottomControlsBar extends React.PureComponent<
+  Props,
+  null
+> {
   static propTypes: PropTypes.ValidationMap<Props> = {
     // Metadata
     currentTime: PropTypes.number.isRequired, // In seconds
@@ -32,11 +35,11 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
 
     // Styles
     barColor: PropTypes.string, // Already completed bar color
-    joyStickColor: PropTypes.string // Bar current position color
+    joyStickColor: PropTypes.string, // Bar current position color
   };
 
   static defaultProps = {
-    navigationAllowed: true
+    navigationAllowed: true,
   };
 
   public hasMovedSlider: boolean;
@@ -85,7 +88,9 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
   render() {
     return (
       <View style={styles.barWrapper}>
-        <Text style={styles.currentTime}>{this.secondsToMS(this.props.currentTime)}</Text>
+        <Text style={styles.currentTime}>
+          {this.secondsToMS(this.props.currentTime)}
+        </Text>
         <Slider
           pointerEvents={this.props.navigationAllowed ? undefined : "none"}
           style={styles.loadingBar}
@@ -96,7 +101,9 @@ export default class BottomControlsBar extends React.PureComponent<Props, null> 
           onValueChange={this.onSliderTouch}
           onSlidingComplete={this.onSlidingComplete}
         />
-        <Text style={styles.totalTime}>{this.secondsToMS(this.props.totalTime)}</Text>
+        <Text style={styles.totalTime}>
+          {this.secondsToMS(this.props.totalTime)}
+        </Text>
       </View>
     );
   }
@@ -109,18 +116,18 @@ const styles = StyleSheet.create({
     height: 70,
     paddingHorizontal: 20,
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   currentTime: {
     color: "white",
-    width: 40
+    width: 40,
   },
   loadingBar: {
     flex: 1,
-    marginHorizontal: 10
+    marginHorizontal: 10,
   },
   totalTime: {
     color: "white",
-    width: 40
-  }
+    width: 40,
+  },
 });

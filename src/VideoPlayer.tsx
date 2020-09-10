@@ -47,8 +47,7 @@ interface State {
 export default class VideoPlayer extends React.PureComponent<Props, State> {
   static propTypes = {
     // Metadata
-    source: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-      .isRequired,
+    source: PropTypes.oneOfType([PropTypes.any]).isRequired,
     autoStart: PropTypes.bool,
 
     // Customisable components
@@ -121,18 +120,16 @@ export default class VideoPlayer extends React.PureComponent<Props, State> {
     clearTimeout(this.controlsHider);
   }
 
-  componentWillUpdate(nextProps: Props, nextState: State) {
+  componentDidUpdate(prevProps: Props, prevState: State) {
     // Fade in/out on controls.
-    if (nextState.showControls !== this.state.showControls) {
+    if (prevState.showControls !== this.state.showControls) {
       Animated.timing(this.controlsFadeValue, {
-        toValue: nextState.showControls ? 1 : 0,
+        toValue: this.state.showControls ? 1 : 0,
         duration: 250,
         useNativeDriver: true,
       }).start();
     }
-  }
 
-  componentDidUpdate(prevProps: Props, prevState: State) {
     const controlsDisplayed =
       prevState.showControls !== this.state.showControls &&
       this.state.showControls === true;
@@ -293,7 +290,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   backgroundVideo: {
-    flex: 1,
+    width: "100%",
+    aspectRatio: 1,
   },
   bottomControlsBar: {
     zIndex: 10,
