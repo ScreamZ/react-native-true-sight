@@ -15,6 +15,7 @@
     "url": "https://github.com/ScreamZ/react-native-true-sight/issues"
   },
   "main": "build/VideoPlayer.js",
+  "types": "build/VideoPlayer.d.ts",
   "scripts": {
     "test": "jest",
     "build": "tsc",

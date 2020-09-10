@@ -4,7 +4,7 @@
     "jsx": "react-native",
     "module": "es6",
     "sourceMap": false,
-    "declaration": false,
+    "declaration": true,
     "lib": ["dom", "esnext"],
     "noImplicitAny": false,
     "noUnusedLocals": true,
