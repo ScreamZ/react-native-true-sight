@@ -39,9 +39,8 @@ Here is an example :
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Platform, StatusBar, View } from 'react-native'
-import VideoPlayer from 'react-native-true-sight'
+import { VideoPlayer, DefaultMainControl, DefaultBottomControlsBar } from "react-native-true-sight";
 import Immersive from 'react-native-immersive'
-
 import CloseButton from '../../Components/Common/CloseButton'
 
 export default class FullScreenVideoModal extends Component {
@@ -64,14 +63,27 @@ export default class FullScreenVideoModal extends Component {
   }
 
   render() {
+    // You just need to flex: 1 and display and overlay a close button with position: absolute;
     return (
       <View style={{ flex: 1, backgroundColor: 'black' }}>
         <StatusBar barStyle="light-content" />
         <CloseButton onPress={this.onClose} />
         <VideoPlayer
-          source="https://somevideo.mp4"
-          onClose={this.onClose}
-        />
+          autoStart={false}
+          mainControl={args => <DefaultMainControl {...args} />}
+          bottomControl={args => <DefaultBottomControlsBar {...args} />}
+        >
+          {args => (
+            <VideoFrame
+              ref={args.playerRef}
+              source={{ uri: data.videoUrl }}
+              paused={args.videoPaused}
+              onLoad={args.onLoad}
+              onProgress={args.onProgress}
+              onEnd={args.onEnd}
+            />
+          )}
+        </VideoPlayer>
       </View>
     )
   }

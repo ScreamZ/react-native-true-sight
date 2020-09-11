@@ -10,7 +10,7 @@
 
 This library provide a fully customisable video player that work both on Android and iOS. It also come with common use case documentation of things that you would like to implements.
 
-By default there are two commands bar that are displayed respectively on different part of the parent container:
+By default there are two controls slots that are displayed respectively on different part of the parent container and you can use default components provided by this library:
 
 - **Middle**. Contain by default a grid display two buttons:
   - One with play / pause alternating.
@@ -21,7 +21,6 @@ By default there are two commands bar that are displayed respectively on differe
 ## Documentation
 
 - [Installation chapter](./doc/install.md)
-- [Personnalize default commands bar](./doc/personnalize-default-cmd-bar.md)
 - [Render a FullScreen Video player](./doc/full-screen-player.md)
 - [Implement your own controls bar](./doc/custom-controls-bar.md)
 
@@ -29,31 +28,38 @@ By default there are two commands bar that are displayed respectively on differe
 
 This is simple as that.
 
-VideoPlayer accept the following props.
+VideoPlayer ship around any video component, but fits well with react-video. In v2 you've total control on the video component.
 
-- **source** - An object with a key uri which is an url that target the MP4 file. Or directly a reference from a video on file system.
 - **autoStart** - Whether or not the video should start when rendered (Default to true).
-- **onError** - A callback that will be called when an error occured, if the resource is not reachable for example.
-- **onProgress** - A callback called each time the cursor advance in the video, receiving an object as following:
-  - currentTime - The current time in seconds.
-  - playableDuration - The playable duration in seconds, dependings on the buffer load.
-  - maximumDuration - The maximum duration of the video in seconds.
-- **onEnd** - A callback that will be called when the video reach the end.
+- **mainControl** - The component used to render the main control bar, you can use the default one provided by this lib or your own.
+- **bottomControl** - The component used to render the bottom control bar, you can use the default one provided by this lib or your own.
 
 For advanced configuration, such as infinite loop, check the rest of the documentation and custom controls bar.
 
 ```jsx
-import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { View } from "react-native";
-import VideoPlayer from "react-native-true-sight";
+import { VideoPlayer, DefaultMainControl, DefaultBottomControlsBar } from "react-native-true-sight";
 
 export default class HomeScreen extends Component {
   render() {
     return (
-      <View style={{ flex: 1, backgroundColor: "black" }}>
-        <VideoPlayer source={{ uri: "https://somevideo.mp4" }} />
-      </View>
+      <VideoPlayer
+          autoStart={false}
+          mainControl={args => <DefaultMainControl {...args} />}
+          bottomControl={args => <DefaultBottomControlsBar {...args} />}
+        >
+          {args => (
+            <VideoFrame
+              ref={args.playerRef}
+              source={{ uri: data.videoUrl }}
+              paused={args.videoPaused}
+              onLoad={args.onLoad}
+              onProgress={args.onProgress}
+              onEnd={args.onEnd}
+            />
+          )}
+        </VideoPlayer>
     );
   }
 }
