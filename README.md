@@ -39,6 +39,7 @@ For advanced configuration, such as infinite loop, check the rest of the documen
 ```jsx
 import React, { Component } from "react";
 import { View } from "react-native";
+import Video from "react-native-video";
 import { VideoPlayer, DefaultMainControl, DefaultBottomControlsBar } from "react-native-true-sight";
 
 export default class HomeScreen extends Component {
@@ -50,7 +51,7 @@ export default class HomeScreen extends Component {
           bottomControl={args => <DefaultBottomControlsBar {...args} />}
         >
           {args => (
-            <VideoFrame
+            <Video
               ref={args.playerRef}
               source={{ uri: data.videoUrl }}
               paused={args.videoPaused}
